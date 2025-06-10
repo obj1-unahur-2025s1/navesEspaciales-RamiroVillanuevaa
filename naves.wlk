@@ -1,6 +1,7 @@
 class Naves{
   var direccion
   var velocidad
+  var combustible = 0
 
   method acelerar(cuanto) {
     velocidad = 10000.min(velocidad + cuanto) 
@@ -30,9 +31,20 @@ class Naves{
     direccion = (-10).max(direccion - 1)
   }
 
-  method prepararViaje() //abstracto porque cada subclase lo implementa de forma diferente
+  method prepararViaje(){
+    self.cargarCombustible(30000)
+    self.acelerar(5000)
+    } 
 
-  
+  method cargarCombustible(cantidad) {
+    combustible =+ cantidad
+  }
+
+  method descargarCombusitible(cantidad) {
+    combustible = 0.max(combustible - cantidad)
+  }
+
+
 }
 
 //const nave1 = new Nave(velocidad=1000, direccion=0)
@@ -46,6 +58,9 @@ class NavesBaliza inherits Naves{
   }
 
   override method prepararViaje() { //sobreescribiendo el metodo abstracto de la clase padre "NAVE" solo para NAVE BALIZA
+
+    super() // llama al metodo prepararViaje de la clase padre para que CARGUE COMBUSTIBLE Y ACELERE y dsp haga lo de abajo 
+
     self.cambiarColorDeBaliza("verde")
     self.ponerseParaleloAlSol()
   }
@@ -68,6 +83,7 @@ class NavesPasajeros inherits Naves{
   method descargarRacionesBebida(cantidad) {racionesBebida = 0.max(racionesBebida - cantidad)}
 
   override method prepararViaje() { //sobreescribiendo el metodo abstracto de la clase padre "NAVE" solo para NAVE PASAJEROS
+    super() // llama al metodo prepararViaje de la clase padre para que CARGUE COMBUSTIBLE Y ACELERE y dsp haga lo de abajo
     self.cargarRacionesComida(4 * pasajeros)
     self.cargarRacionesBebida(6 * pasajeros)
     self.acercarseUnPocoAlSol()
@@ -112,6 +128,8 @@ class NavesCombate inherits Naves{
   
 
   override method prepararViaje() { //sobreescribiendo el metodo abstracto de la clase padre "NAVE" solo para NAVE COMBATE
+    
+    super() // llama al metodo prepararViaje de la clase padre para que CARGUE COMBUSTIBLE Y ACELERE y dsp haga lo de abajo
     self.ponerseVisible()
     self.replegarMisiles()
     self.acelerar(15000)
